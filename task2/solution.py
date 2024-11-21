@@ -42,3 +42,14 @@ def get_data_from_first_page(url):
     next_page_url = 'https://ru.wikipedia.org' + next_page
     return data, next_page_url
 
+
+def get_animals_count(url=URL):
+    alphabet = dict.fromkeys([chr(i) for i in range(ord('А'), ord('Я')+1)], 0)
+    data, next_url = get_data_from_first_page(url)
+    for letter, count in data.items():
+        if letter in alphabet:
+            alphabet[letter] += count
+            get_data_from_first_page(next_url)
+        else:
+            return alphabet
+
