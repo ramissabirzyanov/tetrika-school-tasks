@@ -24,7 +24,8 @@ URL = 'https://ru.wikipedia.org/wiki/Категория:Животные_по_а
 SEACH_UNTIL_LETTER = 'A'
 
 
-def write_to_scv(*args):
+def write_to_csv(*args):
+
     with open('task2/beasts.csv', 'w', newline='') as file:
         for item in args:
             csv.writer(file).writerows(item)
@@ -35,7 +36,9 @@ def get_html(url: str) -> str:
     return response.text
 
 
-def get_data_from_page(url):
+def get_data_from_page(url: str) -> tuple[dict, str]:
+    """Получает буквы и количество животных для каждой буквы только с одной страницы,
+    а также адрес следующей страницы"""
     page = get_html(url)
     soup = BeautifulSoup(page, 'html.parser')
     div_tag = soup.find('div', 'mw-category mw-category-columns').find_all('div', 'mw-category-group')
@@ -50,17 +53,19 @@ def get_data_from_page(url):
 
 
 def get_animal_count(url=URL):
-    animal_count = defaultdict(int)
+    """Парсит все необходимые страницы.
+    Получает все нужные буквы и количество животных для каждой буквы"""
+    animals_count = defaultdict(int)
 
     while url:
         data, next_page_url = get_data_from_page(url)
         url = next_page_url
         for letter, count in data.items():
-            animal_count[letter] += count
+            animals_count[letter] += count
 
-    return animal_count.items()
+    return animals_count.items()
 
 
 if __name__ == '__main__':
-    animal_count = get_animal_count()
-    write_to_scv(animal_count)
+    animals_count = get_animal_count()
+    write_to_csv(animals_count)
