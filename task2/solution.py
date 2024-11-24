@@ -36,7 +36,7 @@ def get_html(url: str) -> str:
     return response.text
 
 
-def get_data_from_page(url: str) -> tuple[dict, str]:
+def get_data_from_page(url: str) -> tuple[dict, str] | tuple[dict, None]:
     """Получает буквы и количество животных для каждой буквы только с одной страницы,
     а также адрес следующей страницы"""
     page = get_html(url)
@@ -52,7 +52,7 @@ def get_data_from_page(url: str) -> tuple[dict, str]:
     return data, next_page_url
 
 
-def get_animal_count(url=URL):
+def get_animal_count(url=URL) -> defaultdict:
     """Парсит все необходимые страницы.
     Получает все нужные буквы и количество животных для каждой буквы"""
     animals_count = defaultdict(int)
@@ -63,9 +63,9 @@ def get_animal_count(url=URL):
         for letter, count in data.items():
             animals_count[letter] += count
 
-    return animals_count.items()
+    return animals_count
 
 
 if __name__ == '__main__':
     animals_count = get_animal_count()
-    write_to_csv(animals_count)
+    write_to_csv(animals_count.items())
