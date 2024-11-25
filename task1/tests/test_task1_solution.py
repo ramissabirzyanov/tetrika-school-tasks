@@ -3,13 +3,15 @@ from task1.solution import strict
 
 
 @strict
-def sum_two(a: int, b: int) -> int:
+def sum_two(a: float, b: float) -> int:
     return a + b
 
 
-assert sum_two(1, 2) == 3
 
-
-def test_type_error():
+@pytest.mark.parametrize("arg1, arg2, expected", [
+    (1, 2, 3),
+    (1, 2.4, pytest.raises(TypeError)),
+    ])
+def test_strict_decorator(arg1, arg2, expected):
     with pytest.raises(TypeError):
-        sum_two(1, 2.4)
+        assert sum_two(arg1, arg2) == expected
