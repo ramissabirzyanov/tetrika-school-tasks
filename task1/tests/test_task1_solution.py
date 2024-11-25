@@ -7,7 +7,6 @@ def sum_two(a: float, b: float) -> int:
     return a + b
 
 
-
 @pytest.mark.parametrize("arg1, arg2, expected", [
     (1, 2, 3),
     (1, 2.4, pytest.raises(TypeError)),
