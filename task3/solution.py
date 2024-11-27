@@ -21,7 +21,7 @@ def get_online_seconds(lesson_interval: list, person_interval: list) -> list:
     while person_interval:
         interval_begin = person_interval.pop(0)
         interval_end = person_interval.pop(0)
-        person_seconds = [num for num in range(interval_begin, interval_end)]
+        person_seconds = (num for num in range(interval_begin, interval_end))
         for second in person_seconds:
             if second in lesson_seconds:
                 online_sec.append(second)
